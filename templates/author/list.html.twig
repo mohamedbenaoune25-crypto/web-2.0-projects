@@ -1,0 +1,69 @@
+{# templates/author/list.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Auteurs{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Liste des Auteurs</h1>
+    
+    {# Condition si le tableau n'est pas défini ou vide #}
+    {% if authors is not defined or authors is empty %}
+        <div class="alert alert-warning" role="alert">
+            Aucun auteur trouvé.
+        </div>
+    {% else %}
+        {# Affichage du nombre d'auteurs #}
+        <div class="alert alert-info" role="alert">
+            <strong>Nombre d'auteurs : {{ authors|length }}</strong>
+        </div>
+
+        {# Calcul du nombre total de livres #}
+        {% set totalBooks = 0 %}
+        {% for author in authors %}
+            {% set totalBooks = totalBooks + author.nb_books %}
+        {% endfor %}
+        
+        <div class="alert alert-success" role="alert">
+            <strong>Nombre total de livres : {{ totalBooks }}</strong>
+        </div>
+
+        {# Tableau des auteurs #}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Photo</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Nombre de livres</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for author in authors %}
+                <tr>
+                    <td>
+                        {% if author.picture %}
+                            <img src="{{ asset(author.picture) }}" alt="{{ author.username }}" class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover;">
+                        {% else %}
+                            <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                No Image
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td>{{ author.username|upper }}</td>
+                    <td>{{ author.email }}</td>
+                    <td>{{ author.nb_books }}</td>
+                    <td>
+                        <a href="{{ path('author_details', {'id': author.id}) }}" class="btn btn-info btn-sm">
+                            Détails
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+{% endblock %}

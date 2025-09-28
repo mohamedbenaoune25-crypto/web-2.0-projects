@@ -1,0 +1,35 @@
+{# templates/author/showAuthor.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de {{ author.username }}{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Détails de l'Auteur</h1>
+    
+    <div class="card">
+        <div class="row g-0">
+            <div class="col-md-4">
+                {% if author.picture %}
+                    <img src="{{ asset(author.picture) }}" class="img-fluid rounded-start" alt="{{ author.username }}">
+                {% else %}
+                    <div class="bg-secondary text-white d-flex align-items-center justify-content-center h-100">
+                        <span>Image non disponible</span>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h2 class="card-title">{{ author.username|upper }}</h2>
+                    <p class="card-text">
+                        <strong>Email :</strong> {{ author.email }}<br>
+                        <strong>Nombre de livres :</strong> {{ author.nb_books }}
+                    </p>
+                    <a href="{{ path('list_authors') }}" class="btn btn-primary">Retour à la liste</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
